@@ -8,7 +8,7 @@ $( document ).ready(function() {
     // take the topics in this array and create buttons in your HTML.
     function createPlayersButtons () {
         for (var i = 0; i < players.length; i++) {
-            // Creates a new new button
+            // Creates a new button
             var b = $('<button>');
             // Add a class to the new button
             b.addClass('player');
@@ -27,6 +27,17 @@ $( document ).ready(function() {
     $('#display').on("click", function()
     
     //When the user clicks one of the still GIPHY images, the gif should animate. 
+    $('.gif').on('click', function() {
+        // Grabs the current attribute data state of the gif clicked and sets it equal to state
+        var state = $(this).attr('data-state')
+
+        // If the current state is still, swtich it. (and vice versa). Do the same for data-state. 
+        if (state === 'still') {
+            $(this).attr('src', $(this).attr('data-animate'));
+            $(this).attr('data-state', 'animate')
+        } else $(this).attr('src', $(this).attr('data-still'));
+               $(this).attr('data-state', 'still')
+    });
     //If the user clicks the gif again, it should stop playing.
     
     // Under every gif, display its rating (PG, G, so on).
