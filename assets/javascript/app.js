@@ -39,14 +39,11 @@ $( document ).ready(function() {
     // Wrap the ajax call in a function that will be called by other functions that are triggered by button clicks
     
     function passTeamsToAPICall() {
-        var apiKey = '6uwYL0toyPhGto5jWNPJvt5LRwOuCpCL';
         var apiLimit = 10;
-
-        for ( var i = 0; i < teams.length; i++) {
-        // Ajax call to grab the gifs
-        var q = teams[i];
+        var apiKey = '6uwYL0toyPhGto5jWNPJvt5LRwOuCpCL';
+        var q = $(this).attr('data-teamName'); // Grabs the team corresponding to the button click
         var apiCallUrl = 'http://api.giphy.com/v1/gifs/search?q='+ q + '&api_key=' + apiKey + '&limit=' + apiLimit;
-        
+        // Ajax call to grab the gifs
         $.ajax({
             // buiild the url for the api call 
             url : apiCallUrl,
@@ -58,8 +55,6 @@ $( document ).ready(function() {
             console.log(apiCallUrl)
             
         });
-
-    }
     };
         
         // Pause function 
