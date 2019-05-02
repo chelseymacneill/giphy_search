@@ -36,7 +36,7 @@ $( document ).ready(function() {
         var apiLimit = 10;
         var apiKey = '6uwYL0toyPhGto5jWNPJvt5LRwOuCpCL';
         var q = $(this).attr('data-teamName'); // Grabs the team corresponding to the button click
-        var apiCallUrl = 'http://api.giphy.com/v1/gifs/search?q='+ q + '&api_key=' + apiKey + '&limit=' + apiLimit;
+        var apiCallUrl = 'https://api.giphy.com/v1/gifs/search?q='+ q + '&api_key=' + apiKey + '&limit=' + apiLimit;
         // Ajax call to grab the gifs
         $.ajax({
             // buiild the url for the api call 
@@ -47,9 +47,12 @@ $( document ).ready(function() {
             console.log(apiResponse);
             console.log(q)
             //console.log(apiCallUrl)
+
+            // Emptying the display of previous gifs
+            $("#MainDisplay").empty()
             
             // Need to create a for loop for all 10 gifs to be displayed 
-            
+
             for (var i = 0; i < 10; i++) {
                 
                 // Creating a div to hold the movie
