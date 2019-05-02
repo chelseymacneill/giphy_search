@@ -25,20 +25,14 @@ $( document ).ready(function() {
             b.text(teams[i]);
             // Append the button to the html document
             $('#teams').append(b);
-            console.log(b)
+            //console.log(b)
         };
     };
     
     //When the user clicks on a button, the page should grab 10 static, non-animated gif images from the GIPHY API and place them on the page.
     function displayTeamGifs () {
         
-    }
-    
-    
-    
-    // Wrap the ajax call in a function that will be called by other functions that are triggered by button clicks
-    
-    function passTeamsToAPICall() {
+        // Call the API based on which team button was clicked
         var apiLimit = 10;
         var apiKey = '6uwYL0toyPhGto5jWNPJvt5LRwOuCpCL';
         var q = $(this).attr('data-teamName'); // Grabs the team corresponding to the button click
@@ -52,28 +46,97 @@ $( document ).ready(function() {
             //Function to manipulate response goes here
             console.log(apiResponse);
             console.log(q)
-            console.log(apiCallUrl)
+            //console.log(apiCallUrl)
             
+            
+                // Creating a div to hold the movie
+                var gifDiv = $("<div class='gif'>");
+                
+                // Storing the title
+                var title = apiResponse.data[0].title;
+                console.log(title);
+                // Creating an element to hold the title
+                var titleOne = $("<p>").text("Title: " + title);
+        
+                // Displaying the title
+                gifDiv.append(titleOne);
+        
+                // Storing the rating data
+                var rating = apiResponse.data[0].rating;
+                console.log(rating)
+                // Creating an element to have the rating displayed
+                var ratingOne = $("<p>").text("Rating: " + rating);
+                
+                // Displaying the rating
+                gifDiv.append(ratingOne);
+                
+                // Retrieving the gif for the image
+                var gifURL = apiResponse.data[0].url;
+                console.log(gifURL)
+                
+                // Creating an element to hold the image
+                var gif = $("<img>").attr("src", gifURL);
+                
+                // Appending the image
+                gifDiv.append(gif);
+
+                // Append the built div to the page
+                $("#MainDisplay").append(gifDiv);
         });
     };
+    
+    // Grab the data from the API call and push it to the doc 
+    /*function display () {
+        // Creating a div to hold the movie
+        var gifDiv = $("<div class='gif'>");
         
-        // Pause function 
-        $('#display').on("click", function stopGIF() {});
+        // Storing the title
+        var title = [0].title;
         
-        //When the user clicks one of the still GIPHY images, the gif should animate. 
-        $('.gif').on('click', function() { // gif is not an html element yet
-            // Grabs the current attribute data state of the gif clicked and sets it equal to state
-            var state = $(this).attr('data-state')
-            
-            // If the current state is still, swtich it. (and vice versa). Do the same for data-state. 
-            //If the user clicks the gif again, it should stop playing.
-            if (state === 'still') {
-                $(this).attr('src', $(this).attr('data-animate'));
-                $(this).attr('data-state', 'animate')
-            } else $(this).attr('src', $(this).attr('data-still'));
-            $(this).attr('data-state', 'still')
-        });
+        // Creating an element to hold the title
+        var titlOone = $("<p>").text("Title: " + title)
 
+        // Displaying the title
+        gifDiv.append(titleOne)
+
+        // Storing the rating data
+        var rating = apiResponse[0].rating;
+        
+        // Creating an element to have the rating displayed
+        var ratingOne = $("<p>").text("Rating: " + rating);
+        
+        // Displaying the rating
+        gifDiv.append(pOne);
+        
+        // Retrieving the gif for the image
+        var gifURL = apiResponse[0].url;
+        
+        // Creating an element to hold the image
+        var gif = $("<img>").attr("src", gifURL);
+        
+        // Appending the image
+        gifDiv.append(gif);
+    };
+    */
+    
+    
+    // Pause function 
+    $('#display').on("click", function stopGIF() {});
+    
+    //When the user clicks one of the still GIPHY images, the gif should animate. 
+    $('.gif').on('click', function() { // gif is not an html element yet
+        // Grabs the current attribute data state of the gif clicked and sets it equal to state
+        var state = $(this).attr('data-state')
+        
+        // If the current state is still, swtich it. (and vice versa). Do the same for data-state. 
+        //If the user clicks the gif again, it should stop playing.
+        if (state === 'still') {
+            $(this).attr('src', $(this).attr('data-animate'));
+            $(this).attr('data-state', 'animate')
+        } else $(this).attr('src', $(this).attr('data-still'));
+        $(this).attr('data-state', 'still')
+    });
+    
     
     // Under every gif, display its rating (PG, G, so on).
     
@@ -93,7 +156,7 @@ $( document ).ready(function() {
     
     
     // On click of a button with class team display gifs for that team
-    $(document).on("click", ".team", passTeamsToAPICall);
+    $(document).on("click", ".team", displayTeamGifs);
     // Call CreateteamButtons function to build the default buttons
     createTeamsButtons();
 }); // end of the document ready block
