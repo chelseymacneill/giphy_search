@@ -1,0 +1,27 @@
+html { border-style: solid;
+    border-color: pink;
+    background-color: aqua;
+}
+
+#mainDisplay {
+    align-items: center;
+}
+
+#teams {
+    height : 30px;
+    width : auto;
+    border-style: solid;
+    border-color: pink;
+    margin: 15px;
+    padding : 5px;
+}
+
+button .team {
+    margin: 5px;
+}
+
+div {   border-style: solid;
+    border-color: pink;
+    background-color: aqua;
+
+}
