@@ -35,7 +35,12 @@ $( document ).ready(function() {
         var apiLimit = 10;
         var apiKey = '6uwYL0toyPhGto5jWNPJvt5LRwOuCpCL';
         var q = $(this).attr('data-teamName'); // Grabs the team corresponding to the button click
-        var apiCallUrl = 'https://api.giphy.com/v1/gifs/search?q='+ q + '&api_key=' + apiKey + '&limit=' + apiLimit;
+        // Limit to 2019 playoff times
+        var createDate = '2019-05-01 12:41:48'
+        
+        var apiCallUrl = 'https://api.giphy.com/v1/gifs/search?q='+ q + '&create_datetime=' + createDate + '&api_key=' + apiKey + '&limit=' + apiLimit;
+        
+        
         // Ajax call to grab the gifs
         $.ajax({
             // buiild the url for the api call 
@@ -46,12 +51,12 @@ $( document ).ready(function() {
             console.log(apiResponse);
             console.log(q)
             //console.log(apiCallUrl)
-
+            
             // Emptying the display of previous gifs
             $("#MainDisplay").empty()
             
             // Need to create a for loop for all 10 gifs to be displayed 
-
+            
             for (var i = 0; i < 10; i++) {
                 
                 // Creating a div to hold the movie
@@ -62,7 +67,7 @@ $( document ).ready(function() {
                 
                 //Displaying the title
                 gifDiv.append(pTitle)
-
+                
                 // Storing the rating data
                 var pRating = $("<p>").text("Rating: " + apiResponse.data[i].rating);
                 
@@ -70,7 +75,14 @@ $( document ).ready(function() {
                 gifDiv.append(pRating);
                 
                 // Creating an element to hold the image
-                var gif = $("<img>").attr("src", apiResponse.data[i].images.fixed_height.url);
+                var gif = $("<img>").attr("src", apiResponse.data[i].images.fixed_height.url)
+                .attr("data-state", "still")
+                .attr("data-animate", apiResponse.data[i].images.fixed_height.url)
+                .attr("data-still", apiResponse.data[i].images.fixed_height_still.url)
+                .attr("class", "biff");
+                
+                
+                // Having the gif load in a still state
                 gifDiv.append(gif)
                 
                 // Append the built div to the page
@@ -81,43 +93,37 @@ $( document ).ready(function() {
     };
     
     
-    // Pause function 
-    $('#display').on("click", function stopGIF() {});
-    
     //When the user clicks one of the still GIPHY images, the gif should animate. 
-    $('.gif').on('click', function() { // gif is not an html element yet
-        // Grabs the current attribute data state of the gif clicked and sets it equal to state
-        var state = $(this).attr('data-state')
-        
-        // If the current state is still, swtich it. (and vice versa). Do the same for data-state. 
-        //If the user clicks the gif again, it should stop playing.
-        if (state === 'still') {
-            $(this).attr('src', $(this).attr('data-animate'));
-            $(this).attr('data-state', 'animate')
-        } else $(this).attr('src', $(this).attr('data-still'));
-        $(this).attr('data-state', 'still')
+    $(".biff").on("click", function() {
+        // The attr jQuery method allows us to get or set the value of any attribute on our HTML element
+        var state = $(this).attr("data-state");
+        // If the clicked image's state is still, update its src attribute to what its data-animate value is.
+        // Then, set the image's data-state to animate
+        // Else set src to the data-still value
+        if (state === "still") {
+            $(this).attr("src", $(this).attr("data-animate"));
+            $(this).attr("data-state", "animate");
+        } else {
+            $(this).attr("src", $(this).attr("data-still"));
+            $(this).attr("data-state", "still");
+        }
     });
-    
-    
-    // Under every gif, display its rating (PG, G, so on).
-    
-    //* Only once you get images displaying with button presses should you move on to the next step.
     
     // Add a form to your page takes the value from a user input box and adds it into your `topics` array. Then make a function call that takes each topic in the array remakes the buttons on the page.
     $('add-team-button').on('click', function(event) {
         // Stops the default behavior of the input from overriding our desired behavior
         event.preventDefault();
         // Grab the text from the user input
-        var team = $('team-input').val().trim(); // why is this val and not value
+        var team = $('user-input').val().trim(); 
         // Push this name to the array of teams 
         teams.push(team);
-        
+        createTeamButtons();
     });
-    // Deploy your assignment to Github Pages.
     
     
     // On click of a button with class team display gifs for that team
     $(document).on("click", ".team", displayTeamGifs);
     // Call CreateteamButtons function to build the default buttons
     createTeamsButtons();
+
 }); // end of the document ready block
